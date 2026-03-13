@@ -1,0 +1,244 @@
+:root {
+  --gold: #c9a84c;
+  --gold2: #f0d080;
+  --gold3: #7a5c1e;
+  --teal: #0d4a4a;
+  --teal2: #0a2e2e;
+  --teal3: #1a7a6a;
+  --cream: #f8f0dc;
+  --deep: #050e0e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--deep);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'Lato', sans-serif;
+}
+
+/* ── starfield canvas ── */
+#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+
+
+/* ── lanterns ── */
+#lanterns { position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+.lantern {
+  position:absolute;
+  top: -20px;
+  animation: swing linear infinite, descend linear forwards;
+  transform-origin: top center;
+}
+.lantern svg { filter: drop-shadow(0 0 8px rgba(255,180,40,0.8)); }
+
+@keyframes swing {
+  0%,100% { rotate: -12deg; }
+  50%      { rotate: 12deg; }
+}
+@keyframes descend {
+  0%   { top: -80px; opacity:0; }
+  5%   { opacity:1; }
+  95%  { opacity:1; }
+  100% { top: 110vh; opacity:0; }
+}
+
+/* ── main card ── */
+.card {
+  position: relative;
+  z-index: 10;
+  width: min(520px, 92vw);
+  background: linear-gradient(160deg, #0c2e2a 0%, #071a18 50%, #0a2620 100%);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.12),
+    0 0 40px rgba(10,60,50,0.6),
+    0 0 100px rgba(0,0,0,0.8),
+    inset 0 0 60px rgba(0,0,0,0.4);
+  overflow: hidden;
+  padding: 0 0 40px;
+}
+
+/* ornamental top band */
+.card-top {
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, var(--gold3), var(--gold), var(--gold2), var(--gold), var(--gold3), transparent);
+  animation: shimmer-bar 3s ease-in-out infinite alternate;
+}
+@keyframes shimmer-bar {
+  0%   { opacity:0.7; }
+  100% { opacity:1; }
+}
+
+/* moon area */
+.card-moon-area {
+  position: relative;
+  text-align: center;
+  padding: 30px 20px 10px;
+}
+
+/* crescent moon */
+.moon-wrap {
+  display: inline-block;
+  animation: moon-in 1.2s cubic-bezier(0.34,1.56,0.64,1) both;
+  animation-delay: 0.3s;
+  filter: drop-shadow(0 0 20px rgba(255,200,60,0.7)) drop-shadow(0 0 50px rgba(255,160,0,0.4));
+}
+@keyframes moon-in {
+  0%   { transform: translateY(-60px) scale(0.5) rotate(-30deg); opacity:0; }
+  100% { transform: translateY(0) scale(1) rotate(0deg); opacity:1; }
+}
+.moon-wrap svg { animation: moon-glow 3s ease-in-out infinite alternate; }
+@keyframes moon-glow {
+  0%   { filter: drop-shadow(0 0 14px rgba(255,200,40,0.6)); }
+  100% { filter: drop-shadow(0 0 30px rgba(255,220,80,0.95)) drop-shadow(0 0 60px rgba(255,160,0,0.5)); }
+}
+
+/* star dots around moon */
+.star-dot {
+  position: absolute;
+  background: var(--gold2);
+  border-radius: 50%;
+  opacity: 0;
+  animation: star-appear 0.6s ease forwards, twinkle 1.5s ease-in-out infinite alternate;
+  animation-delay: 0.8s, 1.4s;
+}
+@keyframes star-appear {
+  0%   { opacity:0; transform:scale(0) rotate(-30deg); }
+  60%  { opacity:1; transform:scale(1.4) rotate(5deg); }
+  100% { opacity:1; transform:scale(1) rotate(0deg); }
+}
+@keyframes twinkle {
+  0%   { opacity:0.2; transform:scale(0.6); }
+  100% { opacity:1;   transform:scale(1.3); }
+}
+
+/* arabic calligraphy */
+.arabic {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--gold2);
+  letter-spacing: 0.06em;
+  text-align: center;
+  line-height: 1.4;
+  opacity: 0;
+  animation: fade-up 0.9s ease forwards;
+  animation-delay: 0.9s;
+  text-shadow: 0 0 20px rgba(240,208,128,0.5);
+  padding: 6px 20px 0;
+}
+
+/* divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  opacity: 0;
+  animation: fade-up 0.9s ease forwards;
+  animation-delay: 1.2s;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.divider-diamond {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* main title */
+.eid-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2rem, 8vw, 3.2rem);
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #7a5c1e 0%, #c9a84c 30%, #f0d080 50%, #c9a84c 70%, #7a5c1e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: gold-shine 3s linear infinite, title-in 1s cubic-bezier(0.34,1.56,0.64,1) both;
+  animation-delay: 0s, 1.5s;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  padding: 0 20px;
+}
+@keyframes gold-shine {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes title-in {
+  0%   { opacity:0; transform:scale(0.8) translateY(20px); }
+  100% { opacity:1; transform:scale(1) translateY(0); }
+}
+
+.eid-sub {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(0.9rem, 3vw, 1.25rem);
+  font-weight: 400;
+  text-align: center;
+  color: var(--gold);
+  letter-spacing: 0.22em;
+  padding: 4px 20px 0;
+  opacity: 0;
+  animation: fade-up 0.9s ease forwards;
+  animation-delay: 1.9s;
+}
+
+/* message */
+.message {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.82rem, 2.5vw, 0.96rem);
+  color: rgba(248,240,220,0.72);
+  text-align: center;
+  line-height: 1.85;
+  padding: 18px 36px 0;
+  opacity: 0;
+  animation: fade-up 0.9s ease forwards;
+  animation-delay: 2.3s;
+  letter-spacing: 0.04em;
+}
+
+/* bottom ornament */
+.bottom-ornament {
+  text-align: center;
+  padding: 22px 20px 0;
+  opacity: 0;
+  animation: fade-up 0.9s ease forwards;
+  animation-delay: 2.6s;
+}
+
+/* canvas layers */
+#particles { position:fixed; inset:0; z-index:3; pointer-events:none; }
+#fireworks { position:fixed; inset:0; z-index:4; pointer-events:none; }
+
+/* shared fade-up */
+@keyframes fade-up {
+  0%   { opacity:0; transform:translateY(18px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+/* geometric corner ornaments */
+.corners { position:absolute; inset:0; pointer-events:none; }
+.corner {
+  position:absolute;
+  width:48px; height:48px;
+  border-color: rgba(201,168,76,0.5);
+  border-style: solid;
+}
+.corner-tl { top:8px; left:8px;  border-width:2px 0 0 2px; }
+.corner-tr { top:8px; right:8px; border-width:2px 2px 0 0; }
+.corner-bl { bottom:8px; left:8px;  border-width:0 0 2px 2px; }
+.corner-br { bottom:8px; right:8px; border-width:0 2px 2px 0; }
